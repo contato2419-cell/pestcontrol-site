@@ -32,6 +32,14 @@ $$("[data-words]").forEach((el) => {
   });
 });
 
+// Fotos e mapa ganham a máscara que se abre no scroll
+$$("[data-clip]").forEach((el) => {
+  const w = document.createElement("span");
+  w.className = "cw";
+  w.append(...el.childNodes);
+  el.append(w);
+});
+
 // Atraso em cascata para itens vizinhos
 $$("[data-r], [data-clip]").forEach((el) => {
   const irmaos = [...el.parentElement.children].filter((c) => c.matches("[data-r], [data-clip]"));

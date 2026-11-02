@@ -1,0 +1,7 @@
+node_modules/
+_material/
+renders/
+.hyperframes/
+.vercel/
+.claude/
+graphify-out/

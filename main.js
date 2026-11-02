@@ -10,8 +10,16 @@ heroPause.addEventListener("click", () => {
   if (heroVideo.paused) heroVideo.play();
   else heroVideo.pause();
 });
-heroVideo.addEventListener("play", () => (heroPause.textContent = "Pausar vídeo"));
-heroVideo.addEventListener("pause", () => (heroPause.textContent = "Tocar vídeo"));
+const syncPause = () => {
+  heroPause.classList.toggle("is-paused", heroVideo.paused);
+  heroPause.setAttribute("aria-label", heroVideo.paused ? "Tocar vídeo" : "Pausar vídeo");
+};
+heroVideo.addEventListener("play", syncPause);
+heroVideo.addEventListener("pause", syncPause);
+
+// No PC, os botões fixos só aparecem depois do hero
+const float = document.querySelector(".float");
+new IntersectionObserver(([e]) => float.classList.toggle("is-on", !e.isIntersecting)).observe(document.querySelector(".hero"));
 
 // Links de WhatsApp com a mensagem pronta
 document.querySelectorAll("[data-wa]").forEach((a) => {

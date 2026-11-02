@@ -5,3 +5,5 @@ renders/
 .vercel/
 .claude/
 graphify-out/
+.vercel/
+.env*

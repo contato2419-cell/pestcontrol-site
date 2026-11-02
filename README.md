@@ -1,21 +1,23 @@
-# PestControl - site
+# PestControl
 
-`site/` é o site final (HTML, CSS e JS puros). Pode publicar a pasta como está.
+Site institucional da PestControl, dedetizadora em Conceição do Mato Dentro (MG).
 
-Para ver na máquina:
+HTML, CSS e JavaScript puros, sem build e sem dependências.
+
+## Rodar na máquina
 
 ```bash
-npx http-server site -p 4173
+npx http-server . -p 4173
 ```
 
-## Confirmar com o cliente antes de publicar
+## Onde mexer
 
-1. Link do concorrente que ele gostou: chegou quebrado.
-2. Horário de sábado: ele passou até 12h, o Google mostra até 17h. O site usa 12h.
-3. Lista de pragas: formigas, aranhas, cupins, pulgas e carrapatos e mosquitos foram incluídos por serem comuns no ramo.
-4. Serviços: confirmar "inspeção com luz ultravioleta" e "garantia do serviço".
-5. Hospitais e indústrias: confirmar o texto de cada segmento.
-6. Licença sanitária e responsável técnico: pedir número para mostrar no site.
-7. Domínio: acesso ao pestcontrolmg.com.br para trocar o site antigo.
-8. Relatório do serviço: confirmar se é entregue a todo cliente.
-9. Autorização para usar as fotos da equipe e os nomes das avaliações do Google.
+- `index.html`: textos e seções.
+- `style.css`: visual. As cores e fontes ficam em `:root`, no início do arquivo.
+- `main.js`: menu, janelas, formulário e WhatsApp. O número fica em `WHATS`, na primeira linha.
+- `assets/video/`: vídeo do fundo do hero. `hero-desktop.mp4` é o de PC e `hero-mobile.mp4` é o de celular.
+- `assets/img/`: fotos e logo.
+
+## Publicação
+
+O projeto está ligado à Vercel: todo envio para a branch `main` publica sozinho.

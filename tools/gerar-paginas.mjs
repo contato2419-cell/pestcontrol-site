@@ -1,0 +1,220 @@
+// Gera as páginas de serviço, o sitemap e o robots.txt a partir do index.html.
+// Rode na raiz do projeto depois de mudar o menu, o rodapé ou os textos abaixo:
+//   node tools/gerar-paginas.mjs
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+
+const SITE = "https://pestcontrolmg.com.br";
+const CIDADE = "Conceição do Mato Dentro";
+const index = readFileSync("index.html", "utf8");
+const trecho = (de, ate) => {
+  const i = index.indexOf(de);
+  return index.slice(i, index.indexOf(ate, i) + ate.length);
+};
+const topo = trecho('<header class="top">', "</header>");
+const rodape = index.slice(index.indexOf('<footer class="foot">'), index.indexOf('<script src="/main.js"'));
+const cidades = [...index.matchAll(/<li>([^<]+)<\/li>/g)].map((m) => m[1]).filter((c) => !c.includes(" foi "));
+
+const servicos = [
+  {
+    slug: "dedetizacao",
+    nome: "Dedetização",
+    titulo: "Dedetização em Conceição do Mato Dentro",
+    descricao: "Dedetização de baratas, formigas, aranhas e outras pragas em Conceição do Mato Dentro e região, para casas e empresas. Peça um orçamento.",
+    lead: "Controle de baratas, formigas, aranhas e outras pragas, com produto e técnica escolhidos para cada ambiente.",
+    img: "supermercado.webp",
+    alt: "Técnico da PestControl fazendo dedetização em um supermercado",
+    itens: ["Inspeção do local e identificação da praga", "Aplicação planejada para a rotina da casa ou da empresa", "Orientação para evitar novas infestações", "Atendimento para residências, condomínios, comércios e indústrias"],
+  },
+  {
+    slug: "controle-de-escorpioes",
+    nome: "Controle de escorpiões",
+    titulo: "Controle de escorpiões em Conceição do Mato Dentro",
+    descricao: "Inspeção com luz ultravioleta para localizar e capturar escorpiões em Conceição do Mato Dentro e região. Atendimento emergencial pelo WhatsApp.",
+    lead: "Inspeção com luz ultravioleta para localizar e capturar os escorpiões, com orientação para evitar que voltem.",
+    img: "escorpioes-uv.webp",
+    alt: "Escorpiões capturados brilhando sob luz ultravioleta",
+    itens: ["Inspeção com luz ultravioleta", "Captura dos escorpiões encontrados", "Identificação de frestas, entulho e pontos de abrigo", "Orientação para proteger a família e os pets"],
+  },
+  {
+    slug: "desratizacao",
+    nome: "Desratização",
+    titulo: "Desratização em Conceição do Mato Dentro",
+    descricao: "Controle de ratos em casas, condomínios e empresas de Conceição do Mato Dentro e região, com identificação de rotas e pontos de entrada.",
+    lead: "Identificação das rotas e dos pontos de entrada dos ratos, com orientação de segurança para pessoas e pets.",
+    img: "rato.webp",
+    alt: "Rato saindo de um ralo",
+    itens: ["Identificação das rotas e dos pontos de entrada", "Plano de controle para o local", "Orientação de segurança para pessoas e pets", "Recomendações para evitar que os ratos voltem"],
+  },
+  {
+    slug: "limpeza-de-caixa-dagua",
+    nome: "Higienização de caixa d'água",
+    titulo: "Limpeza de caixa d'água em Conceição do Mato Dentro",
+    descricao: "Limpeza, higienização e desinfecção de caixas d'água e reservatórios em Conceição do Mato Dentro e região. Solicite um orçamento.",
+    lead: "Limpeza, higienização e desinfecção de caixas e reservatórios, para a água da sua casa ou empresa.",
+    img: "limpeza-reservatorio.webp",
+    alt: "Técnico com cinto de segurança limpando um reservatório de água",
+    itens: ["Remoção de lodo, biofilme e impurezas", "Higienização para eliminar bactérias e microrganismos", "Desinfecção para deixar a água protegida", "Atendimento para residências, condomínios, empresas e escolas"],
+  },
+  {
+    slug: "teste-de-potabilidade",
+    nome: "Teste de potabilidade",
+    titulo: "Teste de potabilidade da água em Conceição do Mato Dentro",
+    descricao: "Teste de potabilidade da água em Conceição do Mato Dentro e região, para saber se a água está própria para o consumo. Solicite um orçamento.",
+    lead: "Avaliação da qualidade da água para você saber se ela está própria para o consumo.",
+    img: "caixas-instalacao.webp",
+    alt: "Conjunto de caixas d'água azuis em uma instalação",
+    itens: ["Avaliação da qualidade da água", "Atendimento para casas e empresas", "Orientação sobre os próximos passos"],
+  },
+  {
+    slug: "analise-de-efluentes",
+    nome: "Análise de efluentes",
+    titulo: "Análise de efluentes em Conceição do Mato Dentro",
+    descricao: "Análise de efluentes para empresas e instalações de Conceição do Mato Dentro e região que precisam acompanhar o que é descartado.",
+    lead: "Para empresas e instalações que precisam acompanhar o que é descartado.",
+    img: "aplicacao-esgoto.webp",
+    alt: "Técnico da PestControl trabalhando em uma tampa de esgoto",
+    itens: ["Atendimento para empresas e instalações", "Serviço planejado para a rotina do local", "Orientação sobre os próximos passos"],
+  },
+];
+
+const etapas = [
+  ["Diagnóstico", "Visitamos o local e identificamos o problema."],
+  ["Plano", "Definimos o serviço certo para a sua rotina."],
+  ["Execução", "Equipe certificada, uniformizada e com EPIs."],
+  ["Acompanhamento", "Orientação para manter o local protegido."],
+];
+
+const pagina = (s) => {
+  const url = `${SITE}/servicos/${s.slug}/`;
+  const titulo = s.titulo.length > 50 ? s.titulo : `${s.titulo} | PestControl`;
+  const schema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Service",
+        name: s.nome,
+        url,
+        description: s.descricao,
+        provider: { "@id": `${SITE}/#empresa`, "@type": "LocalBusiness", name: "PestControl Dedetizadora" },
+        areaServed: cidades,
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Início", item: `${SITE}/` },
+          { "@type": "ListItem", position: 2, name: s.nome, item: url },
+        ],
+      },
+    ],
+  };
+  const outros = servicos.filter((o) => o !== s).map((o) => `<a href="/servicos/${o.slug}/">${o.nome}</a>`).join("\n          ");
+  return `<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script>document.documentElement.classList.add("js")</script>
+  <title>${titulo}</title>
+  <meta name="description" content="${s.descricao}" />
+  <link rel="canonical" href="${url}" />
+  <link rel="icon" href="/assets/img/favicon.png" />
+  <meta name="theme-color" content="#0b0b0c" />
+  <meta name="geo.region" content="BR-MG" />
+  <meta name="geo.placename" content="${CIDADE}" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="pt_BR" />
+  <meta property="og:site_name" content="PestControl" />
+  <meta property="og:title" content="${titulo}" />
+  <meta property="og:description" content="${s.descricao}" />
+  <meta property="og:url" content="${url}" />
+  <meta property="og:image" content="${SITE}/assets/img/og.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preload" href="/assets/fonts/inter-tight-500.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="/style.css" />
+  <script type="application/ld+json">${JSON.stringify(schema)}</script>
+</head>
+<body>
+  <a class="skip" href="#conteudo">Pular para o conteúdo</a>
+
+  ${topo}
+
+  <main id="conteudo">
+    <section class="page-hero">
+      <div class="wrap">
+        <nav aria-label="Você está aqui"><ol class="crumbs" style="list-style:none;padding:0;margin-top:0"><li><a href="/">Início</a></li><li>${s.nome}</li></ol></nav>
+        <div class="page-hero__in">
+          <div>
+            <h1 data-words data-now>${s.titulo}</h1>
+            <p data-r>${s.lead}</p>
+            <div class="hero__btns" data-r>
+              <a class="btn btn--main" data-wa="Olá! Gostaria de um orçamento de ${s.nome.toLowerCase()}." href="https://wa.me/553189250451">Solicitar orçamento</a>
+              <button class="btn btn--white" type="button" data-emergencia><span class="dot"></span>Atendimento emergencial</button>
+            </div>
+          </div>
+          <img src="/assets/img/${s.img}" alt="${s.alt}" fetchpriority="high" />
+        </div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <div class="wrap split2">
+        <h2 data-words>O que está <mark class="hl">incluído</mark></h2>
+        <ul class="list-check">
+          ${s.itens.map((i) => `<li data-r>${i}</li>`).join("\n          ")}
+        </ul>
+      </div>
+    </section>
+
+    <section class="sec sec--tint">
+      <div class="wrap">
+        <header class="head"><h2 data-words>Como <mark class="hl">funciona</mark></h2></header>
+        <ol class="steps" style="list-style:none;padding:0;margin:0">
+          ${etapas.map(([t, d]) => `<li data-r><h3>${t}</h3><p>${d}</p></li>`).join("\n          ")}
+        </ol>
+      </div>
+    </section>
+
+    <section class="sec">
+      <div class="wrap split2">
+        <h2 data-words>Onde <mark class="hl">atendemos</mark></h2>
+        <p data-r>${s.nome} em ${cidades.slice(0, -1).join(", ")} e ${cidades.at(-1)}.</p>
+      </div>
+    </section>
+
+    <section class="sec sec--green">
+      <div class="wrap">
+        <h2 data-words>Solicite um orçamento</h2>
+        <div class="hero__btns" data-r>
+          <a class="btn btn--black" data-wa="Olá! Gostaria de um orçamento de ${s.nome.toLowerCase()}." href="https://wa.me/553189250451">Falar no WhatsApp</a>
+        </div>
+        <div class="others" data-r>
+          ${outros}
+        </div>
+      </div>
+    </section>
+  </main>
+
+  ${rodape}
+  <script src="/main.js" defer></script>
+</body>
+</html>
+`;
+};
+
+for (const s of servicos) {
+  mkdirSync(`servicos/${s.slug}`, { recursive: true });
+  writeFileSync(`servicos/${s.slug}/index.html`, pagina(s));
+}
+
+const hoje = new Date().toISOString().slice(0, 10);
+const urls = ["/", ...servicos.map((s) => `/servicos/${s.slug}/`)];
+writeFileSync(
+  "sitemap.xml",
+  `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls.map((u) => `  <url><loc>${SITE}${u}</loc><lastmod>${hoje}</lastmod></url>`).join("\n")}
+</urlset>
+`,
+);
+writeFileSync("robots.txt", `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`);
+console.log(`${servicos.length} páginas de serviço, sitemap e robots gerados. Cidades: ${cidades.length}`);

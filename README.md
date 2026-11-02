@@ -17,6 +17,7 @@ npx http-server . -p 4173
 - `main.js`: menu, janelas, formulário e WhatsApp. O número fica em `WHATS`, na primeira linha.
 - `assets/video/`: vídeo do fundo do hero. `hero-desktop.mp4` é o de PC e `hero-mobile.mp4` é o de celular.
 - `assets/img/`: fotos e logo.
+- `tools/gerar-paginas.mjs`: gera `servicos/`, `sitemap.xml` e `robots.txt`. Depois de mudar o menu, o rodapé ou um serviço, rode `node tools/gerar-paginas.mjs`.
 
 ## Publicação
 

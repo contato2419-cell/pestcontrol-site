@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://pestcontrolmg.com.br/sitemap.xml

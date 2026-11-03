@@ -63,22 +63,6 @@ $$("[data-words], [data-r], [data-clip]").forEach((el) => {
   else revela.observe(el);
 });
 
-// Serviços: a foto ao lado acompanha a linha em destaque
-const fotos = $$(".svc__preview img");
-const linhas = $$(".row");
-const mostra = (n) => fotos.forEach((f, i) => f.classList.toggle("is-on", i === n));
-linhas.forEach((l, n) => {
-  l.addEventListener("mouseenter", () => mostra(n));
-  l.addEventListener("focus", () => mostra(n));
-});
-if (fotos.length) {
-  const meio = new IntersectionObserver(
-    (itens) => itens.forEach((e) => e.isIntersecting && mostra(linhas.indexOf(e.target))),
-    { rootMargin: "-45% 0px -45% 0px" },
-  );
-  linhas.forEach((l) => meio.observe(l));
-}
-
 // Links de WhatsApp com a mensagem pronta
 $$("[data-wa]").forEach((a) => {
   a.href = waLink(a.dataset.wa);

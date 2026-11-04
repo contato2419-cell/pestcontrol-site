@@ -64,8 +64,8 @@ const servicos = [
     titulo: "Teste de potabilidade da água em Conceição do Mato Dentro",
     descricao: "Teste de potabilidade da água em Conceição do Mato Dentro e região, para saber se a água está própria para o consumo. Solicite um orçamento.",
     lead: "Avaliação da qualidade da água para você saber se ela está própria para o consumo.",
-    img: "caixas-instalacao.webp",
-    alt: "Conjunto de caixas d'água azuis em uma instalação",
+    img: "potabilidade.webp",
+    alt: "Técnico coletando amostra de água da torneira para o teste de potabilidade",
     itens: ["Avaliação da qualidade da água", "Atendimento para casas e empresas", "Orientação sobre os próximos passos"],
   },
   {
@@ -74,11 +74,43 @@ const servicos = [
     titulo: "Análise de efluentes em Conceição do Mato Dentro",
     descricao: "Análise de efluentes para empresas e instalações de Conceição do Mato Dentro e região que precisam acompanhar o que é descartado.",
     lead: "Para empresas e instalações que precisam acompanhar o que é descartado.",
-    img: "aplicacao-esgoto.webp",
-    alt: "Técnico da PestControl trabalhando em uma tampa de esgoto",
+    img: "efluentes.webp",
+    alt: "Profissional analisando uma amostra de efluente em uma estação de tratamento",
     itens: ["Atendimento para empresas e instalações", "Serviço planejado para a rotina do local", "Orientação sobre os próximos passos"],
   },
 ];
+
+// Fotos do trabalho em cada página. Troque pelas fotos reais do serviço quando o cliente mandar.
+const fotos = {"dedetizacao": [
+    ["imperio","Técnico da PestControl dedetizando uma hamburgueria",720,1280],
+    ["unificare","Dedetização na recepção de uma clínica odontológica",720,1280],
+    ["boutique","Dedetização na entrada de um açougue",720,1280],
+    ["aplicacao-casa","Dedetização ao redor de uma casa",640,800]],
+  "controle-de-escorpioes": [
+    ["escorpioes-mortos-2","Escorpiões mortos recolhidos em um copo depois da aplicação",720,984],
+    ["escorpioes-mortos-1","Escorpiões mortos recolhidos depois da dedetização",720,632],
+    ["escorpioes-mortos-3","Filhotes de escorpião mortos depois da aplicação",720,754],
+    ["escorpioes","Escorpiões mortos sobre uma pedra",720,922]],
+  "desratizacao": [
+    ["aplicacao-caixa-gordura","Técnico aplicando produto em uma caixa de inspeção",720,1058],
+    ["aplicacao-esgoto","Técnico trabalhando em uma tampa de esgoto",720,1280],
+    ["aplicacao-externa","Aplicação na área externa de um alojamento",720,1280],
+    ["aplicacao-pousada","Aplicação na área externa de um prédio residencial",640,796]],
+  "limpeza-de-caixa-dagua": [
+    ["caixa-antes","Caixa d'água suja antes da limpeza",720,960,"Antes"],
+    ["caixa-depois","Caixa d'água limpa depois da higienização",720,1280,"Depois"],
+    ["caixas-instalacao","Caixas d'água atendidas em uma instalação",640,854],
+    ["potabilidade","Coleta de amostra de água depois da limpeza",800,600]],
+  "teste-de-potabilidade": [
+    ["caixas-instalacao","Caixas d'água de uma instalação atendida",640,854],
+    ["caixa-depois","Caixa d'água limpa",720,1280],
+    ["limpeza-reservatorio","Limpeza de um reservatório de água",640,854],
+    ["caixa-antes","Caixa d'água suja antes da limpeza",720,960]],
+  "analise-de-efluentes": [
+    ["aplicacao-esgoto","Técnico trabalhando em uma tampa de esgoto",720,1280],
+    ["aplicacao-caixa-gordura","Técnico em uma caixa de inspeção",720,1058],
+    ["aplicacao-externa","Atendimento na área externa de um alojamento",720,1280],
+    ["caixas-instalacao","Reservatórios de uma instalação atendida",640,854]]};
 
 const etapas = [
   ["Diagnóstico", "Visitamos o local e identificamos o problema."],
@@ -177,6 +209,15 @@ const pagina = (s) => {
 
     <section class="sec sec--tint">
       <div class="wrap">
+        <header class="head"><h2 data-words>Fotos do <mark class="hl">trabalho</mark></h2></header>
+        <div class="gal gal--svc">
+          ${fotos[s.slug].map(([f, alt, w, a, tag]) => `<button class="gal__i" type="button" data-clip><img src="/assets/img/${f}.webp" alt="${alt}" width="${w}" height="${a}" loading="lazy" />${tag ? `<span class="tag">${tag}</span>` : ""}</button>`).join("\n          ")}
+        </div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <div class="wrap">
         <header class="head"><h2 data-words>Como <mark class="hl">funciona</mark></h2></header>
         <ol class="steps" style="list-style:none;padding:0;margin:0">
           ${etapas.map(([t, d]) => `<li data-r><h3>${t}</h3><p>${d}</p></li>`).join("\n          ")}
@@ -184,7 +225,7 @@ const pagina = (s) => {
       </div>
     </section>
 
-    <section class="sec">
+    <section class="sec sec--tint">
       <div class="wrap split2">
         <h2 data-words>Onde <mark class="hl">atendemos</mark></h2>
         <p data-r>${s.nome} em ${cidades.slice(0, -1).join(", ")} e ${cidades.at(-1)}.</p>

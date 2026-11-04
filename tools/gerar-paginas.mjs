@@ -4,6 +4,9 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 
 const SITE = "https://pestcontrolmg.com.br";
+// Endereço que já mostra este site. A capa do link (og:image) precisa abrir de verdade,
+// então ela usa este endereço até o domínio pestcontrolmg.com.br apontar para a Vercel.
+const ONLINE = "https://pestcontrol-flax.vercel.app";
 const CIDADE = "Conceição do Mato Dentro";
 const index = readFileSync("index.html", "utf8");
 const trecho = (de, ate) => {
@@ -117,7 +120,10 @@ const pagina = (s) => {
   <title>${titulo}</title>
   <meta name="description" content="${s.descricao}" />
   <link rel="canonical" href="${url}" />
-  <link rel="icon" href="/assets/img/favicon.png" />
+  <link rel="icon" href="/favicon.ico" sizes="48x48" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
   <meta name="theme-color" content="#0b0b0c" />
   <meta name="geo.region" content="BR-MG" />
   <meta name="geo.placename" content="${CIDADE}" />
@@ -126,8 +132,12 @@ const pagina = (s) => {
   <meta property="og:site_name" content="PestControl" />
   <meta property="og:title" content="${titulo}" />
   <meta property="og:description" content="${s.descricao}" />
-  <meta property="og:url" content="${url}" />
-  <meta property="og:image" content="${SITE}/assets/img/og.jpg" />
+  <meta property="og:url" content="${url.replace(SITE, ONLINE)}" />
+  <meta property="og:image" content="${ONLINE}/assets/img/capa.jpg" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="PestControl, dedetizadora em Conceição do Mato Dentro" />
   <meta name="twitter:card" content="summary_large_image" />
   <link rel="preload" href="/assets/fonts/inter-tight-500.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="/style.css" />

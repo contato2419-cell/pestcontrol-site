@@ -22,3 +22,9 @@ npx http-server . -p 4173
 ## Publicação
 
 O projeto está ligado à Vercel: todo envio para a branch `main` publica sozinho.
+
+## Ícone e capa do link
+
+- `favicon.ico`, `apple-touch-icon.png`, `site.webmanifest` e `assets/img/icon-*.png`: ícone da aba e do celular.
+- `assets/img/capa.jpg` (1200x630): imagem que aparece ao compartilhar o link no WhatsApp, Instagram e Facebook.
+- A capa usa o endereço da Vercel (`ONLINE` em `tools/gerar-paginas.mjs` e o `og:image` do `index.html`). Quando o domínio pestcontrolmg.com.br apontar para a Vercel, troque esse endereço pelo domínio e rode o gerador de novo.

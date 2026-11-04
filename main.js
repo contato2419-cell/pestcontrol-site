@@ -3,6 +3,11 @@ const waLink = (txt) => `https://wa.me/${WHATS}?text=${encodeURIComponent(txt)}`
 const $ = (s) => document.querySelector(s);
 const $$ = (s) => [...document.querySelectorAll(s)];
 
+// Rolagem suave (Lenis). Quem pediu menos movimento no sistema fica com a rolagem normal.
+if (window.Lenis && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  new Lenis({ autoRaf: true, anchors: true });
+}
+
 // Troca o vídeo do hero se a tela mudar entre celular e PC (ex.: girar o tablet)
 const heroVideo = $(".hero__video");
 if (heroVideo) matchMedia("(max-width: 899px)").addEventListener("change", () => heroVideo.load());

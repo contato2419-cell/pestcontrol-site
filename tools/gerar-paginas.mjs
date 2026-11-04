@@ -191,11 +191,11 @@ const pagina = (s) => {
       </div>
     </section>
 
-    <section class="sec sec--green">
+    <section class="sec sec--black">
       <div class="wrap">
-        <h2 data-words>Solicite um orçamento</h2>
+        <h2 data-words>Solicite um <mark class="hl">orçamento</mark></h2>
         <div class="hero__btns" data-r>
-          <a class="btn btn--black" data-wa="Olá! Gostaria de um orçamento de ${s.nome.toLowerCase()}." href="https://wa.me/553189250451">Falar no WhatsApp</a>
+          <a class="btn btn--main" data-wa="Olá! Gostaria de um orçamento de ${s.nome.toLowerCase()}." href="https://wa.me/553189250451">Falar no WhatsApp</a>
         </div>
         <div class="others" data-r>
           ${outros}

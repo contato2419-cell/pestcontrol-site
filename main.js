@@ -78,11 +78,11 @@ $$("[data-wa]").forEach((a) => {
 // Menu do celular
 const burger = $(".burger");
 const nav = $("#nav");
-burger.addEventListener("click", () => {
+burger?.addEventListener("click", () => {
   const open = nav.classList.toggle("is-open");
   burger.setAttribute("aria-expanded", open);
 });
-nav.addEventListener("click", (e) => {
+nav?.addEventListener("click", (e) => {
   if (e.target.tagName === "A") {
     nav.classList.remove("is-open");
     burger.setAttribute("aria-expanded", false);
@@ -91,7 +91,7 @@ nav.addEventListener("click", (e) => {
 
 // Janelas: fecham no X e clicando fora
 $$("dialog").forEach((d) => {
-  d.querySelector(".dlg__x").addEventListener("click", () => d.close());
+  d.querySelector(".dlg__x")?.addEventListener("click", () => d.close());
   d.addEventListener("click", (e) => {
     const r = d.getBoundingClientRect();
     const fora = e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom;
@@ -104,7 +104,7 @@ $$("[data-emergencia]").forEach((b) => b.addEventListener("click", () => emergen
 
 // Galeria ampliada
 const lb = $("#lb");
-const lbImg = lb.querySelector("img");
+const lbImg = lb?.querySelector("img");
 $$(".gal__i").forEach((b) =>
   b.addEventListener("click", () => {
     const img = b.querySelector("img");
@@ -128,4 +128,5 @@ if (form) {
   });
 }
 
-$("#ano").textContent = new Date().getFullYear();
+const ano = $("#ano");
+if (ano) ano.textContent = new Date().getFullYear();

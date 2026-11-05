@@ -28,3 +28,8 @@ O projeto está ligado à Vercel: todo envio para a branch `main` publica sozinh
 - `favicon.ico`, `apple-touch-icon.png`, `site.webmanifest` e `assets/img/icon-*.png`: ícone da aba e do celular.
 - `assets/img/capa.jpg` (1200x630): imagem que aparece ao compartilhar o link no WhatsApp, Instagram e Facebook.
 - A capa usa o endereço da Vercel (`ONLINE` em `tools/gerar-paginas.mjs` e o `og:image` do `index.html`). Quando o domínio pestcontrolmg.com.br apontar para a Vercel, troque esse endereço pelo domínio e rode o gerador de novo.
+
+## Página de atendimento (WhatsApp)
+
+- `atendimento/` é o link que a mensagem de saudação do WhatsApp manda. Ela não aparece no Google (`noindex`).
+- É gerada por `tools/gerar-atendimento.mjs`. Depois de mudar algo nela ou no rodapé do `index.html`, rode `node tools/gerar-atendimento.mjs`.

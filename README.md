@@ -33,3 +33,14 @@ O projeto está ligado à Vercel: todo envio para a branch `main` publica sozinh
 
 - `atendimento/` é o link que a mensagem de saudação do WhatsApp manda. Ela não aparece no Google (`noindex`).
 - É gerada por `tools/gerar-atendimento.mjs`. Depois de mudar algo nela ou no rodapé do `index.html`, rode `node tools/gerar-atendimento.mjs`.
+
+## Passar o site para outro desenvolvedor
+
+Tudo o que o site precisa está neste repositório: páginas, estilos, scripts, fotos, vídeos e fontes. Não há banco de dados, build nem senha.
+
+1. O dono cria uma conta no GitHub (e, se quiser hospedar por conta própria, na Vercel).
+2. Este repositório é público: basta clonar (`git clone https://github.com/contato2419-cell/pestcontrol-site`). Para o dono ficar com ele de vez, transferir pela conta atual (GitHub > Settings > Transfer ownership).
+3. Na Vercel: transferir o projeto, ou criar um projeto novo com "Import Git Repository" apontando para este repositório. Não precisa configurar nada: é um site estático com `vercel.json` na raiz.
+4. Domínio: apontar o pestcontrolmg.com.br para a Vercel e trocar o endereço de `ONLINE` em `tools/gerar-paginas.mjs` e `tools/gerar-atendimento.mjs` (e o `og:url`/`og:image` do `index.html`) pelo domínio. Depois rodar os dois geradores.
+
+Para mexer: editar os arquivos, conferir com `npx http-server . -p 4173` e enviar para a branch `main`.
